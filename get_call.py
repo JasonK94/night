@@ -11,6 +11,10 @@ path='C:/Users/user/OneDrive/util/chromedriver.exe'
 url='https://www.youtube.com/watch?v=1_dpGP5wOO0'
 cf=0.85
 
+sid='ACfcc99664b89dbc225561f7000a836305'
+token='9626f256a804b39c6609a403521b0f7c'
+client=Client(sid, token)
+
 def turn_on_wr():
     driver=webdriver.Chrome(path)
     driver.implicitly_wait(10)
@@ -18,7 +22,8 @@ def turn_on_wr():
     driver.implicitly_wait(10)
     pa.click(pa.locateOnScreen('play_yt.png', confidence=cf))
 
-
+    message = client.messages \
+        .create(body='전화왔어요', from_='+19204770393', to='+821083782358')
 while True and not kb.is_pressed('Esc'):
     if pa.locateOnScreen('phonecall.png', confidence=cf) or pa.locateOnScreen('phonedis.png', confidence=cf) or pa.locateOnScreen('phonecall2.png', confidence=cf):
         driver = webdriver.Chrome(path)
@@ -27,6 +32,8 @@ while True and not kb.is_pressed('Esc'):
         driver.implicitly_wait(10)
         pa.click(pa.locateOnScreen('play_yt.png', confidence=cf))
         time.sleep(60)
+
+
     else:
         if int(time.strftime('%H', time.localtime(time.time())))<8:
             print(f'아직 별 일 없는 듯.... {time.strftime("%H:%M:%S",time.localtime(time.time()))}')
