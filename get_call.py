@@ -10,14 +10,14 @@ from bs4 import BeautifulSoup as bs
 from selenium import webdriver
 
 from twilio.rest import Client
-
-os.chdir('D:/overnight')
-path='C:/Users/user/OneDrive/util/chromedriver.exe'
+user=getpass.getuser()
+os.chdir('C:/Users/'+user+'/OneDrive/util/overnight')
+path='C:/Users/'+user+'/OneDrive/util/chromedriver.exe'
 url='https://www.youtube.com/watch?v=1_dpGP5wOO0'
 cf=0.85
 
 sid='ACfcc99664b89dbc225561f7000a836305'
-token='b37fedfec72c13bd8fe5e9a7a1ce14b5'
+token='10b15278cbe5a2f242ad254686ceb341'
 client=Client(sid, token)
 
 absents_=pa.locateAllOnScreen('absent.png', confidence=cf)
