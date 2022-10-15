@@ -13,21 +13,55 @@ path='C:/Users/user/OneDrive/util/chromedriver.exe'
 cf=0.85
 
 while True and not kb.is_pressed('Esc'):
-    if pa.locateOnScreen('edu_donesign.png', confidence=cf):
-        if pa.locateOnScreen('edu_next.png', confidence=cf):
-            xy=pa.position()
-            pa.click(pa.center(pa.locateOnScreen('edu_next.png', confidence=cf)))
-            pa.moveTo(xy)
-        elif pa.locateOnScreen('edu_next2.png', confidence=cf):
-            xy = pa.position()
-            pa.click(pa.center(pa.locateOnScreen('edu_next2.png', confidence=cf)))
-            pa.moveTo(xy)
-        elif pa.locateOnScreen('edu_next3.png', confidence=cf):
-            xy = pa.position()
-            pa.click(pa.center(pa.locateOnScreen('edu_next3.png', confidence=cf)))
-            pa.moveTo(xy)
+    while True:
+        if pa.locateOnScreen('edu_donesign.png', confidence=cf):
+            if pa.locateOnScreen('edu_next.png', confidence=cf):
+                xy=pa.position()
+                pa.click(pa.center(pa.locateOnScreen('edu_next.png', confidence=cf)))
+                pa.moveTo(xy)
+            elif pa.locateOnScreen('edu_next2.png', confidence=cf):
+                xy = pa.position()
+                pa.click(pa.center(pa.locateOnScreen('edu_next2.png', confidence=cf)))
+                pa.moveTo(xy)
+            elif pa.locateOnScreen('edu_next3.png', confidence=cf):
+                xy = pa.position()
+                pa.click(pa.center(pa.locateOnScreen('edu_next3.png', confidence=cf)))
+                pa.moveTo(xy)
+            else:
+                print('버튼이 없어졌어요.')
+                pa.sleep(10)
+        elif pa.locateOnScreen('edu_start.png', confidence=cf):
+            pa.click(pa.center(pa.locateOnScreen('edu_start.png', confidence=cf)))
+        elif pa.locateOnScreen('edu_welldone.png',confidence=cf):
+            pa.click(pa.center(pa.locateOnScreen('edu_end.png', confidence=cf)))
+        elif pa.locateOnScreen('edu_gauge_full.png'):
+            if pa.locateOnScreen('edu_next.png', confidence=cf):
+                xy = pa.position()
+                pa.click(pa.center(pa.locateOnScreen('edu_next.png', confidence=cf)))
+                pa.moveTo(xy)
+            elif pa.locateOnScreen('edu_next2.png', confidence=cf):
+                xy = pa.position()
+                pa.click(pa.center(pa.locateOnScreen('edu_next2.png', confidence=cf)))
+                pa.moveTo(xy)
+            elif pa.locateOnScreen('edu_next3.png', confidence=cf):
+                xy = pa.position()
+                pa.click(pa.center(pa.locateOnScreen('edu_next3.png', confidence=cf)))
+                pa.moveTo(xy)
+            elif pa.locateOnScreen('edu_welldone.png', confidence=cf):
+                pa.click(pa.center(pa.locateOnScreen('edu_end.png', confidence=cf)))
+            else:
+                print('버튼이 없어졌어요.')
+                pa.sleep(10)
+        elif pa.locateOnScreen('edu_lecture.png'):
+            A=pa.locateOnScreen('edu_lecture.png')[1]
+            for i, j in enumerate(pa.locateAllOnScreen('edu_lecturestart.png')):
+                if j[1]>A:
+                    B=j
+                    break
+                pass
+            pa.click(pa.center(B))
+        elif pa.locateOnScreen('edu_play.png'):
+            pa.click(pa.center(pa.locateOnScreen('edu_play.png')))
         else:
-            print('버튼이 없어졌어요.')
-    else:
-        print(f'아직 재생 중입니다. {time.strftime("%H:%M:%S",time.localtime(time.time()))}')
+            print(f'아직 재생 중입니다. {time.strftime("%H:%M:%S",time.localtime(time.time()))}')
         pa.sleep(30)
