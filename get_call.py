@@ -1,3 +1,5 @@
+########토큰을 업데이트하세요#########
+
 import pyautogui as pa
 import keyboard as kb
 import os
@@ -23,6 +25,7 @@ client=Client(sid, token)
 absents_=pa.locateAllOnScreen('absent.png', confidence=cf)
 absents=[absent for absent in absents_]
 errors_XY=0
+errors_call=0
 XY_0=pa.locateOnScreen('phone_vertex.png')
 """
 def turn_on_wr():
@@ -41,6 +44,8 @@ def turn_on_wr():
     )
 """
 while True and not kb.is_pressed('Esc'):
+
+    #이것은 전화가 온 것을 직접 감지한 것
     if pa.locateOnScreen('phonecall.png', confidence=cf) or pa.locateOnScreen('phonedis.png', confidence=cf) \
             or pa.locateOnScreen('phonecall2.png', confidence=cf) or pa.locateOnScreen('phonecall_bobath.png', confidence=cf):
         driver = webdriver.Chrome(path)
@@ -60,15 +65,35 @@ while True and not kb.is_pressed('Esc'):
         print(f'전화가 감지되었습니다. {time.strftime("%H:%M:%S",time.localtime(time.time()))}')
         time.sleep(60)
 
-
+    #부재중 전화도 감지해야할 것이다
     else:
         if int(time.strftime('%H', time.localtime(time.time())))<24:
             xy = pa.position()
-            absents_new_=pa.locateAllOnScreen('absent.png')
+            absents_new_=pa.locateAllOnScreen('absent.png', confidence=cf)
             absents_new=[absent for absent in absents_new_]
-            if absents_new!=absents or pa.locateOnScreen('call_absent.png'):
+            if not pa.locateOnScreen('call.png', confidence=cf):
+                errors_call+=1
+                if errors_call>5:
+                    call = client.calls.create(
+                        url='http://demo.twilio.com/docs/voice.xml',
+                        to='+821083782358',
+                        from_='+19204770393'
+                    )
+                else:
+                    print('전화 기록 최상단으로 이동합니다')
+                    pa.moveTo(XY_0[0] + 200, XY_0[1] + 500)
+                    pa.scroll(5000)
+            elif pa.locateOnScreen('call_absent.png'):
                 message = client.messages \
-                    .create(body='부재중 전화가 늘어난 듯', from_='+19204770393', to='+821083782358')
+                    .create(body='부재중 전화가 늘어났다', from_='+19204770393', to='+821083782358')
+                call = client.calls.create(
+                    url='http://demo.twilio.com/docs/voice.xml',
+                    to='+821083782358',
+                    from_='+19204770393'
+                )
+            elif absents_new!=absents:
+                message = client.messages \
+                    .create(body='부재중 전화가 늘어난 것 같다', from_='+19204770393', to='+821083782358')
                 absents=absents_new
             else:
                 pass
