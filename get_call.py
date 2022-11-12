@@ -19,7 +19,7 @@ url='https://www.youtube.com/watch?v=1_dpGP5wOO0'
 cf=0.85
 
 sid='ACfcc99664b89dbc225561f7000a836305'
-token='10b15278cbe5a2f242ad254686ceb341'
+token='38f49956fee9d9788e3ff06f4300dc59'
 client=Client(sid, token)
 
 absents_=pa.locateAllOnScreen('absent.png', confidence=cf)
@@ -27,22 +27,17 @@ absents=[absent for absent in absents_]
 errors_XY=0
 errors_call=0
 XY_0=pa.locateOnScreen('phone_vertex.png')
-"""
-def turn_on_wr():
-    driver=webdriver.Chrome(path)
-    driver.implicitly_wait(10)
-    driver.get(url)
-    driver.implicitly_wait(10)
-    pa.click(pa.locateOnScreen('play_yt.png', confidence=cf))
 
+def test(text):
+    global client
     message = client.messages \
-        .create(body='전화왔어요', from_='+19204770393', to='+821083782358')
+        .create(body=f'잘 작동하는가?: {text}', from_='+19204770393', to='+821083782358')
     call = client.calls.create(
         url='http://demo.twilio.com/docs/voice.xml',
         to='+821083782358',
-        from_='+19204770393'
-    )
-"""
+        from_='+19204770393')
+test(time.strftime("%H:%M:%S", time.localtime(time.time())))
+
 while True and not kb.is_pressed('Esc'):
 
     #이것은 전화가 온 것을 직접 감지한 것
@@ -115,6 +110,7 @@ while True and not kb.is_pressed('Esc'):
                     pa.scroll(-500)
                     time.sleep(0.03)
                     pa.scroll(500)
+                    print("별 일 없다")
             else:
                 print("폰 모서리가 가려졌어요")
                 errors_XY += 1
@@ -141,6 +137,7 @@ while True and not kb.is_pressed('Esc'):
                 pa.click(pa.center(pa.locateOnScreen('home.png', confidence=cf)))
                 pa.sleep(5)
                 pa.click(pa.center(pa.locateOnScreen('call_history_icon.png', confidence=cf)))
+                print("전화 기록으로 들어왔다")
             else:
                 pass
 
@@ -161,7 +158,7 @@ while True and not kb.is_pressed('Esc'):
                         pa.scroll(500)
                         pa.sleep(0.1)
 
-            elif pa.locateOnScreen('call_absent.png', confidence=cf):
+            elif pa.locateOnScreen('call_absent.png'):
                 print(pa.locateOnScreen('call_absent.png'))
                 message = client.messages \
                     .create(body='부재중 전화가 늘어났다', from_='+19204770393', to='+821083782358')
