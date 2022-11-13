@@ -10,20 +10,27 @@ from selenium import webdriver
 os.chdir('D:/overnight')
 path='C:/Users/user/OneDrive/util/chromedriver.exe'
 
-cf=0.85
+cf=0.95
 
 while True and not kb.is_pressed('Esc'):
     while True:
         if (pa.locateOnScreen('edu_donesign.png', confidence=cf) or pa.locateOnScreen('edu_gauge_full.png', confidence=cf))\
-                or (pa.locateOnScreen('edu_2_end.png', confidence=cf) or pa.locateOnScreen('edu_2_end2.png',confidence=cf)):
+                or (pa.locateOnScreen('edu_2_end.png', confidence=cf) or pa.locateOnScreen('edu_2_end2.png',confidence=cf))\
+                or (pa.locateOnScreen('edu_donesign2.png', confidence=cf) or pa.locateOnScreen('edu_gauge_full2.png',confidence=cf)):
             if pa.locateOnScreen('edu_donesign.png', confidence=cf):
+                print(pa.locateOnScreen('edu_donesign.png', confidence=cf))
                 why=1
             elif pa.locateOnScreen('edu_gauge_full.png', confidence=cf):
+                print(pa.locateOnScreen('edu_gauge_full.png', confidence=cf))
                 why=2
             elif pa.locateOnScreen('edu_2_end.png', confidence=cf):
                 why=3
-            elif pa.locateOnScreen('edu_2_end2.png', confidence=cf+0.1):
+            elif pa.locateOnScreen('edu_2_end2.png', confidence=cf):
                 why=4
+            elif pa.locateOnScreen('edu_donesign2.png', confidence=cf):
+                why=5
+            elif pa.locateOnScreen('edu_gauge_full2.png',confidence=cf):
+                why=6
             else:
                 why=0
             print(f'이 신호에 의해 다음으로 넘어갑니다. {why}')
@@ -50,6 +57,11 @@ while True and not kb.is_pressed('Esc'):
                     pa.click(pa.center(pa.locateOnScreen('edu_2_next.png', confidence=cf)))
                     pa.moveTo(xy)
                     print('code 1-4')
+                elif pa.locateOnScreen('edu_next4.png', confidence=cf):
+                    xy = pa.position()
+                    pa.click(pa.center(pa.locateOnScreen('edu_next4.png', confidence=cf)))
+                    pa.moveTo(xy)
+                    print('code 1-6')
                 else:
                     print('버튼이 없어졌어요.')
                 pa.sleep(10)
@@ -61,6 +73,8 @@ while True and not kb.is_pressed('Esc'):
             #강의 끝났을때
             pa.click(pa.center(pa.locateOnScreen('edu_end.png', confidence=cf)))
             print('code 2-2')
+            pa.sleep(1)
+
         elif pa.locateOnScreen('edu_lecture.png'):
             #다음 강의 누르기
             A=pa.locateOnScreen('edu_lecture.png')[1]
